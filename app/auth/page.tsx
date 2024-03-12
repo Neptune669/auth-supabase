@@ -9,19 +9,21 @@ import {
 } from "@/components/ui/card";
 import SupaClient from "@/lib/supabase/browser";
 import { Github } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 export default function Auth() {
+  const params = useSearchParams();
+  const next = params.get("next") || "/";
   enum Provider {
     Google = "Google",
     Github = "Github",
     // Add other providers here
   }
   const handleLogin = (provider: any) => {
-    console.log(provider);
     const supabase = SupaClient();
     supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: location.origin + "/auth/callback",
+        redirectTo: location.origin + "/auth/callback?next=" + next,
       },
     });
   };
@@ -29,7 +31,7 @@ export default function Auth() {
     <div className="flex min-h-screen flex-col items-center justify-center">
       <Card className="h-80 flex justify-evenly flex-col ring-0 ">
         <CardHeader>
-          <CardTitle>Welcome Raven Auth</CardTitle>
+          <CardTitle>Welcome to Raven Auth</CardTitle>
           <CardDescription>
             Get started by signing in to your account.
           </CardDescription>
